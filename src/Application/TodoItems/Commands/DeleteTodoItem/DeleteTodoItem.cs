@@ -3,7 +3,7 @@ using AspNetCoreAngularTemplate.Domain.Events;
 
 namespace AspNetCoreAngularTemplate.Application.TodoItems.Commands.DeleteTodoItem;
 
-public record DeleteTodoItemCommand(int Id) : IRequest;
+public record DeleteTodoItemCommand(Guid Id) : IRequest;
 
 public class DeleteTodoItemCommandHandler : IRequestHandler<DeleteTodoItemCommand>
 {

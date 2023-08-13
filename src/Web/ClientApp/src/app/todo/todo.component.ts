@@ -61,7 +61,6 @@ export class TodoComponent implements OnInit {
 
   addList(): void {
     const list = {
-      id: 0,
       title: this.newListEditor.title,
       items: []
     } as TodoListDto;
@@ -159,9 +158,8 @@ export class TodoComponent implements OnInit {
 
   addItem() {
     const item = {
-      id: 0,
       listId: this.selectedList.id,
-      priority: this.priorityLevels[0].id,
+      priority: Number.parseInt(this.priorityLevels[0].id),
       title: '',
       done: false
     } as TodoItemDto;
@@ -177,14 +175,14 @@ export class TodoComponent implements OnInit {
   }
 
   updateItem(item: TodoItemDto, pressedEnter: boolean = false): void {
-    const isNewItem = item.id === 0;
+    const isNewItem = !item.id
 
     if (!item.title.trim()) {
       this.deleteItem(item);
       return;
     }
 
-    if (item.id === 0) {
+    if (isNewItem) {
       this.itemsClient
           .createTodoItem({ title: item.title, listId: this.selectedList.id } as CreateTodoItemCommand)
         .subscribe(
@@ -212,7 +210,7 @@ export class TodoComponent implements OnInit {
       this.itemDetailsModalRef.hide();
     }
 
-    if (item.id === 0) {
+    if (item.id) {
       const itemIndex = this.selectedList.items.indexOf(this.selectedItem);
       this.selectedList.items.splice(itemIndex, 1);
     } else {

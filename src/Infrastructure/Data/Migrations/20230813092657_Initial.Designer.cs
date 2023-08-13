@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AspNetCoreAngularTemplate.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("00000000000000_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230813092657_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,9 @@ namespace AspNetCoreAngularTemplate.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("AspNetCoreAngularTemplate.Domain.Entities.TodoItem", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset>("Created")
                         .HasColumnType("datetimeoffset");
@@ -48,8 +46,8 @@ namespace AspNetCoreAngularTemplate.Infrastructure.Data.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ListId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ListId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
@@ -74,11 +72,9 @@ namespace AspNetCoreAngularTemplate.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("AspNetCoreAngularTemplate.Domain.Entities.TodoList", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset>("Created")
                         .HasColumnType("datetimeoffset");
@@ -319,8 +315,8 @@ namespace AspNetCoreAngularTemplate.Infrastructure.Data.Migrations
                 {
                     b.OwnsOne("AspNetCoreAngularTemplate.Domain.ValueObjects.Colour", "Colour", b1 =>
                         {
-                            b1.Property<int>("TodoListId")
-                                .HasColumnType("int");
+                            b1.Property<Guid>("TodoListId")
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("Code")
                                 .IsRequired()

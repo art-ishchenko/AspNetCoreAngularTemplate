@@ -16,11 +16,11 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angula
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
 export interface ITodoItemsClient {
-    getTodoItemsWithPagination(listId: number, pageNumber: number, pageSize: number): Observable<PaginatedListOfTodoItemBriefDto>;
-    createTodoItem(command: CreateTodoItemCommand): Observable<number>;
-    updateTodoItem(id: number, command: UpdateTodoItemCommand): Observable<void>;
-    deleteTodoItem(id: number): Observable<void>;
-    updateTodoItemDetail(id: number, command: UpdateTodoItemDetailCommand): Observable<void>;
+    getTodoItemsWithPagination(listId: string, pageNumber: number, pageSize: number): Observable<PaginatedListOfTodoItemBriefDto>;
+    createTodoItem(command: CreateTodoItemCommand): Observable<string>;
+    updateTodoItem(id: string, command: UpdateTodoItemCommand): Observable<void>;
+    deleteTodoItem(id: string): Observable<void>;
+    updateTodoItemDetail(id: string, command: UpdateTodoItemDetailCommand): Observable<void>;
 }
 
 @Injectable({
@@ -36,7 +36,7 @@ export class TodoItemsClient implements ITodoItemsClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getTodoItemsWithPagination(listId: number, pageNumber: number, pageSize: number): Observable<PaginatedListOfTodoItemBriefDto> {
+    getTodoItemsWithPagination(listId: string, pageNumber: number, pageSize: number): Observable<PaginatedListOfTodoItemBriefDto> {
         let url_ = this.baseUrl + "/api/TodoItems?";
         if (listId === undefined || listId === null)
             throw new Error("The parameter 'listId' must be defined and cannot be null.");
@@ -96,7 +96,7 @@ export class TodoItemsClient implements ITodoItemsClient {
         return _observableOf(null as any);
     }
 
-    createTodoItem(command: CreateTodoItemCommand): Observable<number> {
+    createTodoItem(command: CreateTodoItemCommand): Observable<string> {
         let url_ = this.baseUrl + "/api/TodoItems";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -119,14 +119,14 @@ export class TodoItemsClient implements ITodoItemsClient {
                 try {
                     return this.processCreateTodoItem(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<number>;
+                    return _observableThrow(e) as any as Observable<string>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<number>;
+                return _observableThrow(response_) as any as Observable<string>;
         }));
     }
 
-    protected processCreateTodoItem(response: HttpResponseBase): Observable<number> {
+    protected processCreateTodoItem(response: HttpResponseBase): Observable<string> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -149,7 +149,7 @@ export class TodoItemsClient implements ITodoItemsClient {
         return _observableOf(null as any);
     }
 
-    updateTodoItem(id: number, command: UpdateTodoItemCommand): Observable<void> {
+    updateTodoItem(id: string, command: UpdateTodoItemCommand): Observable<void> {
         let url_ = this.baseUrl + "/api/TodoItems/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -200,7 +200,7 @@ export class TodoItemsClient implements ITodoItemsClient {
         return _observableOf(null as any);
     }
 
-    deleteTodoItem(id: number): Observable<void> {
+    deleteTodoItem(id: string): Observable<void> {
         let url_ = this.baseUrl + "/api/TodoItems/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -247,7 +247,7 @@ export class TodoItemsClient implements ITodoItemsClient {
         return _observableOf(null as any);
     }
 
-    updateTodoItemDetail(id: number, command: UpdateTodoItemDetailCommand): Observable<void> {
+    updateTodoItemDetail(id: string, command: UpdateTodoItemDetailCommand): Observable<void> {
         let url_ = this.baseUrl + "/api/TodoItems/UpdateDetail/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -301,9 +301,9 @@ export class TodoItemsClient implements ITodoItemsClient {
 
 export interface ITodoListsClient {
     getTodoLists(): Observable<TodosVm>;
-    createTodoList(command: CreateTodoListCommand): Observable<number>;
-    updateTodoList(id: number, command: UpdateTodoListCommand): Observable<void>;
-    deleteTodoList(id: number): Observable<void>;
+    createTodoList(command: CreateTodoListCommand): Observable<string>;
+    updateTodoList(id: string, command: UpdateTodoListCommand): Observable<void>;
+    deleteTodoList(id: string): Observable<void>;
 }
 
 @Injectable({
@@ -367,7 +367,7 @@ export class TodoListsClient implements ITodoListsClient {
         return _observableOf(null as any);
     }
 
-    createTodoList(command: CreateTodoListCommand): Observable<number> {
+    createTodoList(command: CreateTodoListCommand): Observable<string> {
         let url_ = this.baseUrl + "/api/TodoLists";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -390,14 +390,14 @@ export class TodoListsClient implements ITodoListsClient {
                 try {
                     return this.processCreateTodoList(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<number>;
+                    return _observableThrow(e) as any as Observable<string>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<number>;
+                return _observableThrow(response_) as any as Observable<string>;
         }));
     }
 
-    protected processCreateTodoList(response: HttpResponseBase): Observable<number> {
+    protected processCreateTodoList(response: HttpResponseBase): Observable<string> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -420,7 +420,7 @@ export class TodoListsClient implements ITodoListsClient {
         return _observableOf(null as any);
     }
 
-    updateTodoList(id: number, command: UpdateTodoListCommand): Observable<void> {
+    updateTodoList(id: string, command: UpdateTodoListCommand): Observable<void> {
         let url_ = this.baseUrl + "/api/TodoLists/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -471,7 +471,7 @@ export class TodoListsClient implements ITodoListsClient {
         return _observableOf(null as any);
     }
 
-    deleteTodoList(id: number): Observable<void> {
+    deleteTodoList(id: string): Observable<void> {
         let url_ = this.baseUrl + "/api/TodoLists/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -657,8 +657,8 @@ export interface IPaginatedListOfTodoItemBriefDto {
 }
 
 export class TodoItemBriefDto implements ITodoItemBriefDto {
-    id?: number;
-    listId?: number;
+    id?: string;
+    listId?: string;
     title?: string | undefined;
     done?: boolean;
 
@@ -698,14 +698,14 @@ export class TodoItemBriefDto implements ITodoItemBriefDto {
 }
 
 export interface ITodoItemBriefDto {
-    id?: number;
-    listId?: number;
+    id?: string;
+    listId?: string;
     title?: string | undefined;
     done?: boolean;
 }
 
 export class CreateTodoItemCommand implements ICreateTodoItemCommand {
-    listId?: number;
+    listId?: string;
     title!: string;
 
     constructor(data?: ICreateTodoItemCommand) {
@@ -740,12 +740,12 @@ export class CreateTodoItemCommand implements ICreateTodoItemCommand {
 }
 
 export interface ICreateTodoItemCommand {
-    listId?: number;
+    listId?: string;
     title: string;
 }
 
 export class UpdateTodoItemCommand implements IUpdateTodoItemCommand {
-    id?: number;
+    id?: string;
     title!: string;
     done?: boolean;
 
@@ -783,14 +783,14 @@ export class UpdateTodoItemCommand implements IUpdateTodoItemCommand {
 }
 
 export interface IUpdateTodoItemCommand {
-    id?: number;
+    id?: string;
     title: string;
     done?: boolean;
 }
 
 export class UpdateTodoItemDetailCommand implements IUpdateTodoItemDetailCommand {
-    id?: number;
-    listId?: number;
+    id?: string;
+    listId?: string;
     priority?: PriorityLevel;
     note?: string | undefined;
 
@@ -830,8 +830,8 @@ export class UpdateTodoItemDetailCommand implements IUpdateTodoItemDetailCommand
 }
 
 export interface IUpdateTodoItemDetailCommand {
-    id?: number;
-    listId?: number;
+    id?: string;
+    listId?: string;
     priority?: PriorityLevel;
     note?: string | undefined;
 }
@@ -900,7 +900,7 @@ export interface ITodosVm {
 }
 
 export class LookupDto implements ILookupDto {
-    id?: number;
+    id?: string | undefined;
     title?: string | undefined;
 
     constructor(data?: ILookupDto) {
@@ -935,12 +935,12 @@ export class LookupDto implements ILookupDto {
 }
 
 export interface ILookupDto {
-    id?: number;
+    id?: string | undefined;
     title?: string | undefined;
 }
 
 export class TodoListDto implements ITodoListDto {
-    id?: number;
+    id?: string;
     title?: string | undefined;
     colour?: string | undefined;
     items?: TodoItemDto[];
@@ -989,15 +989,15 @@ export class TodoListDto implements ITodoListDto {
 }
 
 export interface ITodoListDto {
-    id?: number;
+    id?: string;
     title?: string | undefined;
     colour?: string | undefined;
     items?: TodoItemDto[];
 }
 
 export class TodoItemDto implements ITodoItemDto {
-    id?: number;
-    listId?: number;
+    id?: string;
+    listId?: string;
     title?: string | undefined;
     done?: boolean;
     priority?: number;
@@ -1043,8 +1043,8 @@ export class TodoItemDto implements ITodoItemDto {
 }
 
 export interface ITodoItemDto {
-    id?: number;
-    listId?: number;
+    id?: string;
+    listId?: string;
     title?: string | undefined;
     done?: boolean;
     priority?: number;
@@ -1088,7 +1088,7 @@ export interface ICreateTodoListCommand {
 }
 
 export class UpdateTodoListCommand implements IUpdateTodoListCommand {
-    id?: number;
+    id?: string;
     title!: string;
 
     constructor(data?: IUpdateTodoListCommand) {
@@ -1123,7 +1123,7 @@ export class UpdateTodoListCommand implements IUpdateTodoListCommand {
 }
 
 export interface IUpdateTodoListCommand {
-    id?: number;
+    id?: string;
     title: string;
 }
 
