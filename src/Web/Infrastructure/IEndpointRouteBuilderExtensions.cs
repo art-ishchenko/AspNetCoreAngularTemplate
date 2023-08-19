@@ -2,42 +2,52 @@
 
 public static class IEndpointRouteBuilderExtensions
 {
-    public static IEndpointRouteBuilder MapGet(this IEndpointRouteBuilder builder, Delegate handler, string pattern = "")
+    public static IEndpointRouteBuilder MapGet(
+        this IEndpointRouteBuilder builder,
+        Delegate handler,
+        string pattern = "",
+        params object[] metadata)
     {
-        Guard.Against.AnonymousMethod(handler);
-
-        builder.MapGet(pattern, handler)
-            .WithName(handler.Method.Name);
-
-        return builder;
+        return MapMethod(HttpMethods.Get, builder, handler, pattern, metadata);
     }
 
-    public static IEndpointRouteBuilder MapPost(this IEndpointRouteBuilder builder, Delegate handler, string pattern = "")
+    public static IEndpointRouteBuilder MapPost(
+        this IEndpointRouteBuilder builder,
+        Delegate handler,
+        string pattern = "",
+        params object[] metadata)
     {
-        Guard.Against.AnonymousMethod(handler);
-
-        builder.MapPost(pattern, handler)
-            .WithName(handler.Method.Name);
-
-        return builder;
+        return MapMethod(HttpMethods.Post, builder, handler, pattern, metadata);
     }
 
-    public static IEndpointRouteBuilder MapPut(this IEndpointRouteBuilder builder, Delegate handler, string pattern)
+    public static IEndpointRouteBuilder MapPut(
+        this IEndpointRouteBuilder builder,
+        Delegate handler,
+        string pattern,
+        params object[] metadata)
     {
-        Guard.Against.AnonymousMethod(handler);
-
-        builder.MapPut(pattern, handler)
-            .WithName(handler.Method.Name);
-
-        return builder;
+        return MapMethod(HttpMethods.Put, builder, handler, pattern, metadata);
     }
 
-    public static IEndpointRouteBuilder MapDelete(this IEndpointRouteBuilder builder, Delegate handler, string pattern)
+    public static IEndpointRouteBuilder MapDelete(
+        this IEndpointRouteBuilder builder,
+        Delegate handler,
+        string pattern,
+        params object[] metadata)
+    {
+        return MapMethod(HttpMethods.Delete, builder, handler, pattern, metadata);
+    }
+    
+    private static IEndpointRouteBuilder MapMethod(
+        string method,
+        IEndpointRouteBuilder builder,
+        Delegate handler,
+        string pattern,
+        object[] metadata)
     {
         Guard.Against.AnonymousMethod(handler);
 
-        builder.MapDelete(pattern, handler)
-            .WithName(handler.Method.Name);
+        builder.MapMethods(pattern, new[] { method }, handler).WithName(handler.Method.Name).WithMetadata(metadata);
 
         return builder;
     }

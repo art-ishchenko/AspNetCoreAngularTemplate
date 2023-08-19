@@ -32,6 +32,7 @@ public static class DependencyInjection
 
         services.AddScoped<ApplicationDbContextInitialiser>();
 
+        // todo: 
         services
             .AddDefaultIdentity<ApplicationUser>()
             .AddRoles<IdentityRole>()
