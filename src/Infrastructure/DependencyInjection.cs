@@ -2,6 +2,8 @@
 using AspNetCoreAngularTemplate.Domain.Constants;
 using AspNetCoreAngularTemplate.Infrastructure.Data;
 using AspNetCoreAngularTemplate.Infrastructure.Data.Interceptors;
+using AspNetCoreAngularTemplate.Infrastructure.Email;
+using AspNetCoreAngularTemplate.Infrastructure.Email.Templates;
 using AspNetCoreAngularTemplate.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +42,13 @@ public static class DependencyInjection
 
         services.AddSingleton(TimeProvider.System);
         services.AddTransient<IIdentityService, IdentityService>();
+        services.AddTransient<IAccountManager, AccountManager>();
+        
+        services.AddScoped<IEmailSender, EmailSender>();
+        services.AddOptions<EmailSenderOptions>().Bind(configuration.GetSection(nameof(EmailSenderOptions))).ValidateDataAnnotations();
+
+        services.AddScoped<IEmailTemplateService, EmailTemplateService>();
+        services.AddOptions<EmailTemplateServiceOptions>().Bind(configuration.GetSection(nameof(EmailTemplateServiceOptions))).ValidateDataAnnotations();
 
         services.AddAuthorization(options =>
             options.AddPolicy(Policies.CanPurge, policy => policy.RequireRole(Roles.Administrator)));
