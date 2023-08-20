@@ -1,5 +1,5 @@
-﻿using AspNetCoreAngularTemplate.Application.Common.Interfaces;
-using ValidationException = AspNetCoreAngularTemplate.Application.Common.Exceptions.ValidationException;
+﻿using AspNetCoreAngularTemplate.Application.Common.Exceptions;
+using AspNetCoreAngularTemplate.Application.Common.Interfaces;
 
 namespace AspNetCoreAngularTemplate.Application.Users.Commands.Register;
 
@@ -28,7 +28,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, string>
 
         if (!response.Result.Succeeded)
         {
-            throw new ValidationException(response.Result.Errors);
+            throw new AppValidationException(response.Result.Errors);
         }
 
         await SendVerificationEmail(response.UserId, request.Email!);

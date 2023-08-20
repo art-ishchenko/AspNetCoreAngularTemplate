@@ -1,5 +1,5 @@
-﻿using AspNetCoreAngularTemplate.Application.Common.Interfaces;
-using ValidationException = AspNetCoreAngularTemplate.Application.Common.Exceptions.ValidationException;
+﻿using AspNetCoreAngularTemplate.Application.Common.Exceptions;
+using AspNetCoreAngularTemplate.Application.Common.Interfaces;
 
 namespace AspNetCoreAngularTemplate.Application.Users.Commands.ConfirmEmail;
 
@@ -24,7 +24,7 @@ public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand>
         
         if (!result.Succeeded)
         {
-            throw new ValidationException(result.Errors);
+            throw new AppValidationException(result.Errors);
         }
     }
 }

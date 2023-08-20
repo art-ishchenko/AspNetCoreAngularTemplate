@@ -1,4 +1,4 @@
-﻿using ValidationException = AspNetCoreAngularTemplate.Application.Common.Exceptions.ValidationException;
+﻿using AspNetCoreAngularTemplate.Application.Common.Exceptions;
 
 namespace AspNetCoreAngularTemplate.Application.Common.Behaviours;
 
@@ -28,7 +28,7 @@ public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TReque
                 .ToList();
 
             if (failures.Any())
-                throw new ValidationException(failures);
+                throw new AppValidationException(failures);
         }
         return await next();
     }

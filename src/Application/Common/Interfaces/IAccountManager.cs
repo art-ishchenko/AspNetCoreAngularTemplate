@@ -8,6 +8,12 @@ namespace AspNetCoreAngularTemplate.Application.Common.Interfaces
 
         Task<string> GenerateEmailConfirmationTokenAsync(string userId);
         Task<Result> ConfirmEmailAsync(string userId, string confirmationCode);
+
+        Task<string?> FindUserId(string userEmail);
+        Task<bool> IsEmailConfirmedAsync(string userId);
+        Task<string> GeneratePasswordResetTokenAsync(string userId);
+        Task<Result> ResetPasswordAsync(string userId, string token, string newPassword);
+
         // Task<ApplicationUser> GetUserByIdAsync(string userId);
 
 
@@ -37,8 +43,6 @@ namespace AspNetCoreAngularTemplate.Application.Common.Interfaces
         // Task<(bool Succeeded, string[] Errors)> UpdateRoleAsync(ApplicationRole role, IEnumerable<string> claims);
         // Task<(bool Succeeded, string[] Errors)> UpdateUserAsync(ApplicationUser user);
         // Task<(bool Succeeded, string[] Errors)> UpdateUserAsync(ApplicationUser user, IEnumerable<string> roles);
-        // Task<string> GeneratePasswordResetTokenAsync(ApplicationUser user);
-        // Task<string> GenerateEmailConfirmationTokenAsync(ApplicationUser user);
-        // Task<bool> IsEmailConfirmedAsync(ApplicationUser user);
+        
     }
 }

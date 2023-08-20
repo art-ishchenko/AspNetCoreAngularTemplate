@@ -2,5 +2,6 @@
 
 public interface IEmailTemplateService
 {
-    string GetConfirmEmailTemplate(string userId, string confirmationCode);
+    string GetConfirmEmailTemplate(string userId, string token);
+    string GetResetPasswordTemplate(string userId, string token);
 }

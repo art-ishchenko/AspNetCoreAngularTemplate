@@ -1,6 +1,7 @@
 ﻿using AspNetCoreAngularTemplate.Application.Common.Interfaces;
 using AspNetCoreAngularTemplate.Application.Common.Models;
 using AspNetCoreAngularTemplate.Infrastructure.Data;
+using Humanizer.DateTimeHumanizeStrategy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
@@ -23,6 +24,31 @@ namespace AspNetCoreAngularTemplate.Infrastructure.Identity
             _userManager = userManager;
             // _roleManager = roleManager;
 
+        }
+        
+        public async Task<string> GeneratePasswordResetTokenAsync(string userId)
+        {
+            var user = await this._userManager.FindByIdAsync(userId);
+            Guard.Against.Null(user, nameof(user));
+            return await _userManager.GeneratePasswordResetTokenAsync(user);
+        }
+
+        public async Task<string?> FindUserId(string userEmail)
+        {
+            var user = await this._userManager.FindByEmailAsync(userEmail);
+            return user?.Id;
+        }
+        
+        public async Task<Result> ResetPasswordAsync(string userId, string token, string newPassword)
+        {
+            if (token.Contains(" "))
+                token = token.Replace(" ", "+"); // "+" in token was incorrectly UrlDecoded along the way into a space. So replace back with a plus
+
+            var user = await this._userManager.FindByIdAsync(userId);
+            Guard.Against.Null(user, nameof(user));
+        
+            var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
+            return result.ToApplicationResult();
         }
 
         // public async Task<ApplicationUser> GetUserByIdAsync(string userId)
@@ -162,19 +188,9 @@ namespace AspNetCoreAngularTemplate.Infrastructure.Identity
         //     return await ResetPasswordAsync(user, resetToken, newPassword);
         // }
         //
-        // public async Task<(bool Succeeded, string[] Errors)> ResetPasswordAsync(ApplicationUser user, string token, string newPassword)
-        // {
-        //     if (token.Contains(" "))
-        //         token = token.Replace(" ", "+"); // "+" in token was incorrectly UrlDecoded along the way into a space. So replace back with a plus
+      
         //
-        //     var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
-        //     return (result.Succeeded, result.Errors.Select(e => e.Description).ToArray());
-        // }
-        //
-        // public async Task<string> GeneratePasswordResetTokenAsync(ApplicationUser user)
-        // {
-        //     return await _userManager.GeneratePasswordResetTokenAsync(user);
-        // }
+    
         //
         // public async Task<(bool Succeeded, string[] Errors)> UpdatePasswordAsync(ApplicationUser user, string currentPassword, string newPassword)
         // {
@@ -378,9 +394,15 @@ namespace AspNetCoreAngularTemplate.Infrastructure.Identity
             return result.ToApplicationResult();
         }
         
-        // public async Task<bool> IsEmailConfirmedAsync(ApplicationUser user)
-        // {
-        //     return await _userManager.IsEmailConfirmedAsync(user);
-        // }
+        public async Task<bool> IsEmailConfirmedAsync(string userEmail)
+        {
+            var user = await this._userManager.FindByEmailAsync(userEmail);
+            if (user == null)
+            {
+                return false;
+            }
+
+            return await this._userManager.IsEmailConfirmedAsync(user);
+        }
     }
 }
